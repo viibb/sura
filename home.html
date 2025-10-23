@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sura Page</title>
+    <style>
+        /* Reset básico para mejor consistencia */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        /* Contenedor principal para centrar y limitar ancho en escritorio, pero ocupar todo en móvil */
+        .container {
+            width: 100%;
+            max-width: 600px; /* Ancho máximo para mejor lectura en escritorio */
+            margin: 0 auto;
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
+
+        /* Estilo para el logo */
+        .logo-area {
+            text-align: center; /* Esto centra el contenido (incluyendo la imagen) */
+            padding: 20px 0;
+            background-color: #fff;
+        }
+        .logo-img {
+            max-width: 100%; /* Asegura que la imagen nunca sea más ancha que su contenedor */
+            height: auto;    /* Mantiene la proporción de la imagen */
+            width: 250px;    /* Establece un ancho fijo (ajústalo a tu gusto: 100px, 150px, etc.) */
+            display: block;  /* Para que funcione correctamente el margin auto */
+            margin: 0 auto;  /* Esto asegura el centrado horizontal de la imagen */
+        }
+
+        /* Estilo para imágenes que ocupen todo el ancho del contenedor */
+        .full-width-img {
+        max-width: 100%; /* La imagen nunca será más ancha que su contenedor padre (el .container) */
+        height: auto;    /* Esto es FUNDAMENTAL: Mantiene la proporción de la imagen */
+        display: block;  /* Opcional, pero ayuda a eliminar espacios extra */
+        margin: 15px auto; /* Centra la imagen y le da un poco de margen arriba/abajo */
+        border-radius: 8px; /* Opcional, para que se vea como los otros recuadros */
+        }
+
+        /* Estilo para los recuadros de texto (subtítulos) */
+        .text-box {
+            background-color: #002f9f;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .subtitle-text {
+            font-size: 1.5em; /* Texto grande como subtítulo */
+            font-weight: bold;
+            color: #fff; /* Color primario para el subtítulo */
+            margin: 0;
+        }
+
+        /* Estilo para el área de videos responsiva */
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* Ratio 16:9 (altura / ancho * 100) */
+            height: 0;
+            overflow: hidden;
+            background-color: #000; /* Fondo si el video no carga */
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+        .video-wrapper video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+
+        /* Contenedor de botones de descarga */
+        .download-buttons {
+            display: flex; /* Para que estén uno al lado del otro */
+            justify-content: space-around; /* Espacio entre ellos */
+            gap: 10px; /* Espacio entre los botones */
+            margin: 20px 0;
+            flex-wrap: wrap; /* Permitir que los botones salten de línea en pantallas muy pequeñas */
+        }
+        .download-buttons a {
+            flex-grow: 1; /* Para que ocupen el espacio disponible */
+            padding: 12px 10px;
+            text-decoration: none;
+            color: #fff;
+            background-color: #00b0ce; /* Color para el botón de descarga */
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.95em;
+            transition: background-color 0.3s;
+            min-width: 140px; /* Asegura que los botones no se hagan demasiado pequeños */
+        }
+        .download-buttons a:hover {
+            background-color: #218838;
+        }
+        /* Estilo específico para el segundo botón si se necesita */
+        .download-buttons a:last-child {
+            background-color: #e0ea00; /* Otro color para distinguir */
+        }
+        .download-buttons a:last-child:hover {
+            background-color: #0056b3;
+        }
+
+        /* Estilo para el carrusel de fotos (versión simple scrollable) */
+        .carousel-container {
+            background-color: #fff;
+            padding: 10px;
+            margin: 15px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow-x: scroll; /* Permite desplazamiento horizontal */
+            white-space: nowrap; /* Evita que las imágenes se envuelvan */
+            -webkit-overflow-scrolling: touch; /* Suaviza el scroll en iOS */
+        }
+        .carousel-container::-webkit-scrollbar {
+            display: none; /* Oculta la barra de desplazamiento en algunos navegadores */
+        }
+        .carousel-item {
+            display: inline-block; /* Pone las imágenes en línea */
+            width: 80%; /* Cada imagen ocupa el 80% del contenedor para que se vea parte de la siguiente */
+            max-width: 300px; /* Tamaño máximo para cada imagen */
+            margin-right: 10px; /* Espacio entre imágenes */
+            border-radius: 5px;
+            overflow: hidden;
+            vertical-align: top; /* Alineación para que no haya espacios raros */
+        }
+        .carousel-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Estilo para la sección de Contacto */
+        .contact-area {
+            display: flex; /* Dividir en dos columnas */
+            flex-direction: column; /* Por defecto, en columna para móviles */
+            align-items: center; /* Centrar elementos verticalmente */
+            text-align: center; /* Centrar texto */
+            background-color: #0130a4; /* Fondo oscuro */
+            color: #fff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .contact-info, .contact-action {
+            width: 100%; /* Ocupa todo el ancho en móvil */
+            margin-bottom: 15px;
+        }
+        .contact-info p {
+            margin: 5px 0;
+        }
+        .contact-info .name {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .contact-action h4 {
+            margin-top: 0;
+        }
+        .contact-button {
+            display: block;
+            width: 100%;
+            max-width: 250px; /* Limitar el ancho del botón en móvil */
+            padding: 10px;
+            margin: 0 auto; /* Centrar el botón */
+            text-align: center;
+            background-color: #00b0ce; /* Botón amarillo llamativo */
+            color: #333;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .contact-button:hover {
+            background-color: #e0a800;
+        }
+
+        /* Media Query para escritorio o pantallas más grandes */
+        @media (min-width: 480px) {
+            .contact-area {
+                flex-direction: row; /* Vuelve a modo fila en escritorio */
+                justify-content: space-between;
+                text-align: left;
+            }
+            .contact-info, .contact-action {
+                width: 48%; /* Casi la mitad para cada uno */
+                margin-bottom: 0;
+            }
+            .contact-button {
+                margin: 0; /* Deshacer el centrado del botón en escritorio */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <header class="logo-area">
+            <img src="images/logo.png" alt="Logo de la Empresa" class="logo-img">
+        </header>
+
+        <div>
+        <img src="images/1.jpg" alt="Imagen destacada" class="full-width-img">
+        </div class="carousel-container">
+
+        <div class="text-box">
+            <h2 class="subtitle-text">¿Por qué escoger Afore Sura?</h2>
+        </div>
+
+        <div class="video-wrapper">
+            <video controls poster="assets/images/video1-poster.jpg">
+                <source src="vid/1.mp4" type="video/mp4">
+                <source src="assets/videos/video1.webm" type="video/webm">
+                Tu navegador no soporta el formato de video.
+            </video>
+        </div>
+
+        <div class="text-box">
+            <h2 class="subtitle-text">¿Ley?</h2>
+        </div>
+
+        <div class="carousel-container">
+            <div class="carousel-item"><img src="images/4.jpg" alt="Descripción de imagen 1"></div>
+            <div class="carousel-item"><img src="images/7.jpg" alt="Descripción de imagen 4"></div>
+            <div class="carousel-item"><img src="images/5.jpg" alt="Descripción de imagen 2"></div>
+            <div class="carousel-item"><img src="images/6.jpg" alt="Descripción de imagen 3"></div>
+        </div>
+
+        <div class="text-box">
+            <h2 class="subtitle-text">Pensiones</h2>
+        </div>
+
+        <div class="video-wrapper">
+            <video controls poster="assets/images/video2-poster.jpg">
+                <source src="vid/2.mp4" type="video/mp4">
+                <source src="assets/videos/video2.webm" type="video/webm">
+                Tu navegador no soporta el formato de video.
+            </video>
+        </div>
+
+        <div class="text-box">
+            <h2 class="subtitle-text">Descarga aqui Afore Movil</h2>
+        </div>
+
+        <div class="download-buttons">
+            <a href="https://play.google.com/store/apps/details?id=mx.com.procesar.aforemovil&pcampaignid=web_share" target="_blank">Descargar para Android</a>
+            <a href="https://apps.apple.com/mx/app/aforem%C3%B3vil/id1240001519" target="_blank">Descargar para iOS</a>
+        </div>
+
+        <div class="text-box">
+            <h2 class="subtitle-text">¿Si fallezco?</h2>
+        </div>
+
+        <div class="carousel-container">
+            <div class="carousel-item"><img src="images/8.jpg" alt="Descripción de imagen 1"></div>
+            <div class="carousel-item"><img src="images/9.jpg" alt="Descripción de imagen 2"></div>
+            <div class="carousel-item"><img src="images/10.jpg" alt="Descripción de imagen 3"></div>
+        </div>
+
+        <div class="text-box">
+            <h2 class="subtitle-text">Aportaciones Voluntarias</h2>
+        </div>
+
+        <div class="video-wrapper">
+            <video controls poster="assets/images/video3-poster.jpg">
+                <source src="vid/3.mp4" type="video/mp4">
+                <source src="assets/videos/video3.webm" type="video/webm">
+                Tu navegador no soporta el formato de video.
+            </video>
+        </div>
+
+        <div class="contact-area">
+            <div class="contact-info">
+                <p class="name">Lic. Cynthia Burns Plata</p>
+                <p>Experta en Afores</p>
+            </div>
+            <div class="contact-action">
+                <center>
+                    <h4>Contacto</h4>
+                </center>
+                <a href="tel:6391609708" class="contact-button">Teléfono</a>
+            </div>
+        </div>
+        <div class="download-buttons">
+            <a href="https://wa.me/526391148144?text=Hola,%20estoy%20interesado" target="_blank">WhatsApp</a>
+        </div>
+
+    </div>
+</body>
+</html>
